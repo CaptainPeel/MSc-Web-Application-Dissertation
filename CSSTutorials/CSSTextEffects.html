@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src = 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js'></script>
+        <style>
+
+html,body { margin:0; padding:0; height:100%; width:100%; overflow: hidden;}
+
+#editor {
+    height: 100%;
+    width:50%;
+    display:inline-block;
+}
+
+#container {
+	height:100%;
+	width:auto;
+  white-space : nowrap; 
+  overflow : hidden;
+  position:relative;
+}
+
+#iframe {
+	height:100%;
+	display:inline-block;
+	width:50%;
+}
+
+/* disable tag matching */
+.ace_editor .ace_marker-layer .ace_bracket { display: none }
+            
+        </style>
+    </head>
+
+    <body onload='ready()'>
+
+<div id='container'>
+
+  <div id="editor">
+  </div>
+
+  <iframe id='iframe' frameBorder="0">
+  </iframe>
+</div>
+
+
+
+        <script>
+           function update()
+{
+	var idoc = document.getElementById('iframe').contentWindow.document;
+
+	idoc.open();
+	idoc.write(editor.getValue());
+	idoc.close();
+}
+
+function setupEditor()
+{
+  window.editor = ace.edit("editor");
+  editor.setTheme("ace/theme/monokai");
+  editor.getSession().setMode("ace/mode/html");
+  editor.setValue(`<!DOCTYPE html>
+<html>
+<head>
+<style> 
+p.test1 {
+  white-space: nowrap; 
+  width: 200px; 
+  border: 1px solid #000000;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+p.test2 {
+  white-space: nowrap; 
+  width: 200px; 
+  border: 1px solid #000000;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
+</head>
+<body>
+
+<h1>The text-overflow Property</h1>
+<p>The following two paragraphs contains a long text that will not fit in the box.</p>
+
+<h2>text-overflow: clip:</h2>
+<p class="test1">This is some long text that will not fit in the box</p>
+
+<h2>text-overflow: ellipsis:</h2>
+<p class="test2">This is some long text that will not fit in the box</p>
+
+</body>
+</html>
+
+
+`,1); //1 = moves cursor to end
+
+  editor.getSession().on('change', function() {
+    update();
+  });
+
+  editor.focus();
+  
+  
+  editor.setOptions({
+    fontSize: "16pt",
+    showLineNumbers: false,
+    showGutter: false,
+    vScrollBarAlwaysVisible:true,
+    enableBasicAutocompletion: false, enableLiveAutocompletion: false
+  });
+
+  editor.setShowPrintMargin(false);
+  editor.setBehavioursEnabled(false);
+}
+
+setupEditor();
+update();
+  
+
+        </script>    
+
+
+
+    </body>
+
+</html>
